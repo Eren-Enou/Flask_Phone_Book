@@ -1,0 +1,8 @@
+# ignore the virtual environment
+venv
+
+#also ignore the __pycache__
+__pycache__
+
+#also .vscode as well
+.vscode
