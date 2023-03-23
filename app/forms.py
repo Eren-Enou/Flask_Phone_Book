@@ -8,4 +8,4 @@ class AddressForm(FlaskForm):
     last_name = StringField('Last Name', validators=[InputRequired()])
     phone_number = StringField('Phone Number', validators=[InputRequired()])
     address = StringField('Address', validators=[InputRequired()])
-    submit = SubmitField('Sign Up')
+    submit = SubmitField('Add Address')
