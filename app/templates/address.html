@@ -3,7 +3,7 @@
 {% block title %} Sign Up {% endblock %}
 
 {% block header %}
-    <h1>Sign Up</h1>
+    <h1>Add Address</h1>
 {% endblock %}
 
 {% block content %}
@@ -20,8 +20,8 @@
                         {{ form.last_name.label }}
                         {{ form.last_name(class="form-control", placeholder="Enter Last Name") }}
 
-                        {{ form.phone.label }}
-                        {{ form.phone(class="form-control", placeholder="Enter Phone Number") }}
+                        {{ form.phone_number.label }}
+                        {{ form.phone_number(class="form-control", placeholder="Enter Phone Number") }}
 
                         {{ form.address.label }}
                         {{ form.address(class="form-control", placeholder="Enter Address") }}
