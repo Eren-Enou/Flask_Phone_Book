@@ -101,6 +101,8 @@ def edit_address(address_id):
     # If form submitted, update Address
     if form.validate_on_submit():
         # update the post with the form data
+        address_to_edit.first_name = form.first_name.data
+        address_to_edit.last_name = form.last_name.data
         address_to_edit.address = form.address.data
         address_to_edit.phone_number = form.phone_number.data
         # Commit that to the database
