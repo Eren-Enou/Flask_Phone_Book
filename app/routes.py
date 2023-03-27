@@ -111,6 +111,8 @@ def edit_address(address_id):
         return redirect(url_for('index'))
 
     # Pre-populate the form with Address To Edit's values
+    form.first_name.data = address_to_edit.first_name
+    form.last_name.data = address_to_edit.last_name
     form.address.data = address_to_edit.address
     form.phone_number.data = address_to_edit.phone_number
     return render_template('edit.html', form=form, address=address_to_edit)
