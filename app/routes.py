@@ -6,7 +6,7 @@ from app.models import User, Address
 from flask_login import login_user, logout_user, login_required, current_user
 
 
-@app.route('/')
+@app.route('/', methods=["GET", "POST"])
 def index():
     addresses = Address.query.all()
     form = SearchForm()
@@ -17,6 +17,7 @@ def index():
 
 
 @app.route('/address', methods=["GET", "POST"])
+@login_required
 def address():
     # Create an instance of the form (in the context of the current request)
     form = AddressForm()
