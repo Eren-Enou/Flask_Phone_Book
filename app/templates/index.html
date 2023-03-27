@@ -23,6 +23,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ address.address }}</h5>
                                 <h6 class="card-subtitle">By: {{ address.author.username }}</h6>
+                                <p class="card-text">{{ address.phone_number }}</p>
                                 {% if address.author == current_user %}
                                     <a href="{{ url_for('edit_address', address_id=address.id) }}" class="btn btn-success">Edit</a>
                                     <!-- Button trigger modal -->
