@@ -30,7 +30,7 @@ def address():
         phone_number = form.phone_number.data
         address = form.address.data
         print(first_name, last_name, phone_number, address)
-        new_address = Address(first_name=first_name, last_name=last_name, phone_number=phone_number, address=address)
+        new_address = Address(first_name=first_name, last_name=last_name, phone_number=phone_number, address=address, user_id=current_user.id)
         flash(f"Thank you {new_address.first_name} for adding your address!", "success")
         return redirect(url_for('index'))
     return render_template('address.html', form=form)
