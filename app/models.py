@@ -15,6 +15,7 @@ class Address(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id')) # SQL - FOREIGN KEY(user_id) REFERENCES user(id)
 
 
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         db.session.add(self)

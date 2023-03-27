@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, redirect, url_for, flash
 # from fake_data import posts
-from app.forms import SignUpForm, LoginForm, AddressForm
+from app.forms import SignUpForm, LoginForm, AddressForm, SearchForm
 from app.models import User, Address
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -9,7 +9,11 @@ from flask_login import login_user, logout_user, login_required, current_user
 @app.route('/')
 def index():
     addresses = Address.query.all()
-    return render_template('index.html')
+    form = SearchForm()
+    if form.validate_on_submit():
+        search_term = form.search_term.data
+        addresses = db.session.execute(db.select(Address).where((Address.address.ilike(f"%{search_term}%")) | (Address.phone_number.ilike(f"%{search_term}%")))).scalars().all()
+    return render_template('index.html', addresses=addresses, form=form)
 
 
 @app.route('/address', methods=["GET", "POST"])
@@ -81,4 +85,43 @@ def login():
 def logout():
     logout_user()
     flash("You have logged out", "info")
+    return redirect(url_for('index'))
+
+@app.route('/edit/<address_id>', methods=["GET", "POST"])
+@login_required
+def edit_address(address_id):
+    form = AddressForm()
+    address_to_edit = Address.query.get_or_404(address_id)
+    # Make sure that the Address author is the current user
+    if address_to_edit.author != current_user:
+        flash("You do not have permission to edit this post", "danger")
+        return redirect(url_for('index'))
+
+    # If form submitted, update Address
+    if form.validate_on_submit():
+        # update the post with the form data
+        address_to_edit.address = form.address.data
+        address_to_edit.phone_number = form.phone_number.data
+        # Commit that to the database
+        db.session.commit()
+        flash(f"{address_to_edit.address} has been edited!", "success")
+        return redirect(url_for('index'))
+
+    # Pre-populate the form with Address To Edit's values
+    form.address.data = address_to_edit.address
+    form.phone_number.data = address_to_edit.phone_number
+    return render_template('edit.html', form=form, address=address_to_edit)
+
+
+@app.route('/delete/<address_id>')
+@login_required
+def delete_address(address_id):
+    address_to_delete = Address.query.get_or_404(address_id)
+    if address_to_delete.author != current_user:
+        flash("You do not have permission to delete this address", "danger")
+        return redirect(url_for('index'))
+
+    db.session.delete(address_to_delete)
+    db.session.commit()
+    flash(f"{address_to_delete.address} has been deleted", "info")
     return redirect(url_for('index'))

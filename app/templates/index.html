@@ -4,6 +4,11 @@
 
 {% block header %}
     <h1>Thanks for checking out the Phone Book</h1>
+    {% if current_user.is_authenticated %}
+        <h5>Nice to see you again, {{ current_user.username }}!</h5>
+    {% else %}
+        <h5>Please Sign Up or Log In to Add New Addresses</h5>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -14,15 +19,10 @@
             {% for address in addresses %}
                 <div class="card mt-3">
                     <div class="row g-0">
-                        <!-- <div class="col-md-4">
-                            <img class="card-img-top" src="{{ post.image_url }}" alt="random">
-                        </div> -->
                         <div class="col-md-8">
                             <div class="card-body">
-                                <!-- <h6 class="card-subtitle text-muted">{{ post.date_created }}</h6> -->
                                 <h5 class="card-title">{{ address.address }}</h5>
-                                <h6 class="card-subtitle">By: {{ address.first_name }}</h6>
-                                <!-- <p class="card-text">{{ post.body }}</p> -->
+                                <h6 class="card-subtitle">By: {{ address.author.username }}</h6>
                                 {% if address.author == current_user %}
                                     <a href="{{ url_for('edit_address', address_id=address.id) }}" class="btn btn-success">Edit</a>
                                     <!-- Button trigger modal -->
@@ -40,7 +40,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete {{ a.address }}?</h1>
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete {{ address.address }}?</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
